@@ -74,6 +74,9 @@ code{background:rgba(255,255,255,.1);padding:.15rem .4rem;border-radius:6px;font
 <form method="post" action="/delete_unclaimed" onsubmit="return confirm('确定删除所有未领取的激活码？')">
 <button class="btn btn-danger btn-sm" type="submit">清空未领取</button>
 </form>
+<form method="post" action="/reset_claimed" onsubmit="return confirm('确定重置所有已领取记录？激活码将恢复为待领取状态。')">
+<button class="btn btn-danger btn-sm" type="submit">重置已领取</button>
+</form>
 </div>
 <div style="overflow-x:auto">
 <table>
@@ -86,6 +89,25 @@ code{background:rgba(255,255,255,.1);padding:.15rem .4rem;border-radius:6px;font
 <td>{{c.claimed_at or '—'}}</td>
 </tr>
 {% endfor %}
+</table>
+</div>
+</div>
+
+<div class="glass">
+<h3>📝 领取日志（最近100条）</h3>
+<div style="overflow-x:auto">
+<table>
+<tr><th>TG用户ID</th><th>用户名</th><th>昵称</th><th>激活码</th><th>领取时间</th></tr>
+{% for l in logs %}
+<tr>
+<td><code>{{l.tg_user_id}}</code></td>
+<td>{{('@' + l.tg_username) if l.tg_username else '—'}}</td>
+<td>{{l.tg_fullname}}</td>
+<td><code>{{l.code}}</code></td>
+<td>{{l.created_at}}</td>
+</tr>
+{% endfor %}
+{% if not logs %}<tr><td colspan="5" style="text-align:center;color:rgba(255,255,255,.5)">暂无记录</td></tr>{% endif %}
 </table>
 </div>
 </div>

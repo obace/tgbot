@@ -28,6 +28,14 @@ def init_db():
             CREATE TABLE IF NOT EXISTS admin (
                 id INTEGER PRIMARY KEY, password_hash TEXT NOT NULL
             );
+            CREATE TABLE IF NOT EXISTS logs (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                tg_user_id TEXT,
+                tg_username TEXT,
+                tg_fullname TEXT,
+                code TEXT,
+                created_at TIMESTAMP DEFAULT (datetime('now','localtime'))
+            );
         """)
         if not db.execute("SELECT 1 FROM admin LIMIT 1").fetchone():
             db.execute("INSERT INTO admin VALUES (1, ?)", (generate_password_hash("admin"),))
@@ -66,8 +74,9 @@ def dashboard():
     total = db.execute("SELECT COUNT(*) c FROM codes").fetchone()["c"]
     claimed = db.execute("SELECT COUNT(*) c FROM codes WHERE tg_user_id IS NOT NULL").fetchone()["c"]
     codes = db.execute("SELECT * FROM codes ORDER BY id DESC LIMIT 100").fetchall()
+    logs = db.execute("SELECT * FROM logs ORDER BY id DESC LIMIT 100").fetchall()
     return render_template("dashboard.html", token=token["value"] if token else "",
-                           total=total, claimed=claimed, codes=codes)
+                           total=total, claimed=claimed, codes=codes, logs=logs)
 
 @app.route("/save_token", methods=["POST"])
 @login_required
@@ -119,6 +128,15 @@ def delete_unclaimed():
         flash(f"已删除 {r.rowcount} 个未领取的激活码")
     return redirect(url_for("dashboard"))
 
+@app.route("/reset_claimed", methods=["POST"])
+@login_required
+def reset_claimed():
+    with get_db() as db:
+        r = db.execute("UPDATE codes SET tg_user_id=NULL, claimed_at=NULL WHERE tg_user_id IS NOT NULL")
+        db.execute("DELETE FROM logs")
+        flash(f"已重置 {r.rowcount} 个已领取的激活码")
+    return redirect(url_for("dashboard"))
+
 def auto_start_bot():
     row = get_db().execute("SELECT value FROM config WHERE key='bot_token'").fetchone()
     if row and row["value"]:
@@ -127,4 +145,4 @@ def auto_start_bot():
 auto_start_bot()
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=5099)
+    app.run(host="0.0.0.0", port=5600)
