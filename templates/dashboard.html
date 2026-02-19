@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>管理后台</title>
+<link rel="icon" href="/static/favicon.ico" type="image/x-icon">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,'SF Pro Display','Segoe UI',sans-serif;background:linear-gradient(135deg,#667eea 0%,#764ba2 50%,#f093fb 100%);background-size:400% 400%;animation:grad 12s ease infinite;min-height:100vh;padding:1.5rem;color:#fff}
+@keyframes grad{0%,100%{background-position:0% 50%}50%{background-position:100% 50%}}
+.container{max-width:900px;margin:0 auto}
+.header{display:flex;justify-content:space-between;align-items:center;margin-bottom:1.5rem;padding:0 .3rem}
+h1{font-size:1.5rem;font-weight:600;letter-spacing:-.3px}
+a{color:rgba(255,255,255,.8);text-decoration:none;font-size:.9rem;transition:color .3s}
+a:hover{color:#fff}
+.glass{backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.2);border-radius:20px;padding:1.5rem;margin-bottom:1rem;box-shadow:0 8px 32px rgba(0,0,0,.1);transition:transform .2s}
+.glass:hover{transform:translateY(-2px)}
+.glass h3{margin-bottom:1rem;font-size:.95rem;font-weight:500;color:rgba(255,255,255,.9);letter-spacing:.3px}
+.stats{display:flex;gap:1rem;margin-bottom:1rem}
+.stat{flex:1;backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.18);border-radius:16px;padding:1.2rem;text-align:center;transition:transform .2s}
+.stat:hover{transform:translateY(-2px)}
+.stat .num{font-size:2rem;font-weight:700;background:linear-gradient(135deg,#fff,rgba(255,255,255,.7));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.stat .label{font-size:.8rem;color:rgba(255,255,255,.6);margin-top:.3rem;letter-spacing:.5px;text-transform:uppercase}
+input,textarea{width:100%;padding:.7rem 1rem;border:1px solid rgba(255,255,255,.25);border-radius:12px;font-size:.9rem;background:rgba(255,255,255,.1);backdrop-filter:blur(4px);color:#fff;outline:none;transition:all .3s;margin-bottom:.8rem}
+input::placeholder,textarea::placeholder{color:rgba(255,255,255,.5)}
+input:focus,textarea:focus{border-color:rgba(255,255,255,.5);background:rgba(255,255,255,.18)}
+textarea{height:120px;font-family:'SF Mono',SFMono-Regular,Consolas,monospace;resize:vertical;font-size:.85rem}
+.btn{padding:.6rem 1.2rem;border:none;border-radius:12px;font-size:.85rem;cursor:pointer;color:#fff;font-weight:500;transition:all .3s;letter-spacing:.3px}
+.btn-primary{background:rgba(255,255,255,.2);border:1px solid rgba(255,255,255,.3)}
+.btn-primary:hover{background:rgba(255,255,255,.35);transform:translateY(-1px)}
+.btn-danger{background:rgba(255,80,80,.3);border:1px solid rgba(255,100,100,.3)}
+.btn-danger:hover{background:rgba(255,80,80,.5);transform:translateY(-1px)}
+.btn-sm{padding:.4rem .8rem;font-size:.8rem;border-radius:10px}
+.btn:active{transform:translateY(0)}
+.flash{backdrop-filter:blur(10px);background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.25);color:#fff;padding:.7rem 1rem;border-radius:14px;margin-bottom:1rem;font-size:.9rem;text-align:center}
+table{width:100%;border-collapse:collapse;font-size:.85rem}
+th,td{padding:.6rem .8rem;text-align:left;border-bottom:1px solid rgba(255,255,255,.1)}
+th{color:rgba(255,255,255,.5);font-weight:500;font-size:.8rem;text-transform:uppercase;letter-spacing:.5px}
+td{color:rgba(255,255,255,.85)}
+code{background:rgba(255,255,255,.1);padding:.15rem .4rem;border-radius:6px;font-family:'SF Mono',SFMono-Regular,Consolas,monospace;font-size:.82rem}
+.badge{display:inline-block;padding:.2rem .6rem;border-radius:8px;font-size:.75rem;font-weight:500;letter-spacing:.3px}
+.badge-ok{background:rgba(52,199,89,.25);border:1px solid rgba(52,199,89,.3);color:#34c759}
+.badge-wait{background:rgba(255,204,0,.2);border:1px solid rgba(255,204,0,.3);color:#fc0}
+.actions{display:flex;gap:.5rem;flex-wrap:wrap}
+@media(max-width:600px){.stats{flex-direction:column}.stat .num{font-size:1.5rem}}
+</style></head><body>
+<div class="container">
+<div class="header"><h1>🤖 激活码管理</h1><a href="/logout">退出登录 →</a></div>
+{% with msgs = get_flashed_messages() %}{% if msgs %}{% for m in msgs %}<div class="flash">{{m}}</div>{% endfor %}{% endif %}{% endwith %}
+
+<div class="stats">
+<div class="stat"><div class="num">{{total}}</div><div class="label">总激活码</div></div>
+<div class="stat"><div class="num">{{claimed}}</div><div class="label">已领取</div></div>
+<div class="stat"><div class="num">{{total - claimed}}</div><div class="label">剩余</div></div>
+</div>
+
+<div class="glass">
+<h3>🔑 Telegram Bot Token</h3>
+<form method="post" action="/save_token">
+<input type="text" name="token" value="{{token}}" placeholder="输入你的 Bot Token">
+<button class="btn btn-primary" type="submit">保存并启动机器人</button>
+</form>
+</div>
+
+<div class="glass">
+<h3>📋 批量添加激活码</h3>
+<form method="post" action="/add_codes">
+<textarea name="codes" placeholder="每行一个激活码，或用逗号分隔"></textarea>
+<button class="btn btn-primary" type="submit">添加</button>
+</form>
+</div>
+
+<div class="glass">
+<h3>📊 激活码列表（最近100条）</h3>
+<div class="actions" style="margin-bottom:.8rem">
+<form method="post" action="/delete_unclaimed" onsubmit="return confirm('确定删除所有未领取的激活码？')">
+<button class="btn btn-danger btn-sm" type="submit">清空未领取</button>
+</form>
+</div>
+<div style="overflow-x:auto">
+<table>
+<tr><th>激活码</th><th>状态</th><th>TG用户ID</th><th>领取时间</th></tr>
+{% for c in codes %}
+<tr>
+<td><code>{{c.code}}</code></td>
+<td>{% if c.tg_user_id %}<span class="badge badge-ok">已领取</span>{% else %}<span class="badge badge-wait">待领取</span>{% endif %}</td>
+<td>{{c.tg_user_id or '—'}}</td>
+<td>{{c.claimed_at or '—'}}</td>
+</tr>
+{% endfor %}
+</table>
+</div>
+</div>
+
+<div class="glass">
+<h3>🔒 修改密码</h3>
+<form method="post" action="/change_password">
+<input type="password" name="new_password" placeholder="新密码（至少4位）">
+<button class="btn btn-primary" type="submit">修改密码</button>
+</form>
+</div>
+</div></body></html>

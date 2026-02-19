@@ -1,0 +1,70 @@
+ * Serving Flask app 'app'
+ * Debug mode: off
+INFO:werkzeug:[31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5099
+ * Running on http://10.1.227.148:5099
+INFO:werkzeug:[33mPress CTRL+C to quit[0m
+INFO:werkzeug:127.0.0.1 - - [19/Feb/2026 20:04:30] "GET /login HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [19/Feb/2026 20:04:35] "[32mGET / HTTP/1.1[0m" 302 -
+INFO:werkzeug:127.0.0.1 - - [19/Feb/2026 20:04:35] "GET /login HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [19/Feb/2026 20:04:42] "[32mPOST /login HTTP/1.1[0m" 302 -
+INFO:werkzeug:127.0.0.1 - - [19/Feb/2026 20:04:42] "GET / HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [19/Feb/2026 20:06:53] "[32mPOST /save_token HTTP/1.1[0m" 302 -
+INFO:root:Bot starting...
+Exception in thread Thread-7 (start_bot):
+Traceback (most recent call last):
+  File "/usr/lib/python3.11/asyncio/unix_events.py", line 105, in add_signal_handler
+    signal.set_wakeup_fd(self._csock.fileno())
+ValueError: set_wakeup_fd only works in main thread of the main interpreter
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/usr/lib/python3.11/threading.py", line 1038, in _bootstrap_inner
+    self.run()
+  File "/usr/lib/python3.11/threading.py", line 975, in run
+    self._target(*self._args, **self._kwargs)
+  File "/root/tg-activation-bot/bot.py", line 41, in start_bot
+    _app.run_polling(drop_pending_updates=True)
+  File "/root/tg-activation-bot/venv/lib/python3.11/site-packages/telegram/ext/_application.py", line 839, in run_polling
+    return self.__run(
+           ^^^^^^^^^^^
+  File "/root/tg-activation-bot/venv/lib/python3.11/site-packages/telegram/ext/_application.py", line 1044, in __run
+    loop.add_signal_handler(sig, self._raise_system_exit)
+  File "/usr/lib/python3.11/asyncio/unix_events.py", line 107, in add_signal_handler
+    raise RuntimeError(str(exc))
+RuntimeError: set_wakeup_fd only works in main thread of the main interpreter
+/usr/lib/python3.11/threading.py:1040: RuntimeWarning: coroutine 'Updater.start_polling' was never awaited
+  self._invoke_excepthook(self)
+RuntimeWarning: Enable tracemalloc to get the object allocation traceback
+INFO:werkzeug:127.0.0.1 - - [19/Feb/2026 20:06:53] "GET / HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [19/Feb/2026 20:07:21] "GET / HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [19/Feb/2026 20:07:23] "[32mPOST /save_token HTTP/1.1[0m" 302 -
+INFO:root:Bot starting...
+Exception in thread Thread-11 (start_bot):
+Traceback (most recent call last):
+  File "/usr/lib/python3.11/asyncio/unix_events.py", line 105, in add_signal_handler
+    signal.set_wakeup_fd(self._csock.fileno())
+ValueError: set_wakeup_fd only works in main thread of the main interpreter
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/usr/lib/python3.11/threading.py", line 1038, in _bootstrap_inner
+    self.run()
+  File "/usr/lib/python3.11/threading.py", line 975, in run
+    self._target(*self._args, **self._kwargs)
+  File "/root/tg-activation-bot/bot.py", line 41, in start_bot
+    _app.run_polling(drop_pending_updates=True)
+  File "/root/tg-activation-bot/venv/lib/python3.11/site-packages/telegram/ext/_application.py", line 839, in run_polling
+    return self.__run(
+           ^^^^^^^^^^^
+  File "/root/tg-activation-bot/venv/lib/python3.11/site-packages/telegram/ext/_application.py", line 1044, in __run
+    loop.add_signal_handler(sig, self._raise_system_exit)
+  File "/usr/lib/python3.11/asyncio/unix_events.py", line 107, in add_signal_handler
+    raise RuntimeError(str(exc))
+RuntimeError: set_wakeup_fd only works in main thread of the main interpreter
+INFO:werkzeug:127.0.0.1 - - [19/Feb/2026 20:07:23] "GET / HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [19/Feb/2026 20:07:36] "[32mPOST /add_codes HTTP/1.1[0m" 302 -
+INFO:werkzeug:127.0.0.1 - - [19/Feb/2026 20:07:36] "GET / HTTP/1.1" 200 -

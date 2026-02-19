@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>登录</title>
+<link rel="icon" href="/static/favicon.ico" type="image/x-icon">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,'SF Pro Display','Segoe UI',sans-serif;min-height:100vh;display:flex;justify-content:center;align-items:center;background:linear-gradient(135deg,#667eea 0%,#764ba2 50%,#f093fb 100%);background-size:400% 400%;animation:grad 12s ease infinite}
+@keyframes grad{0%,100%{background-position:0% 50%}50%{background-position:100% 50%}}
+.card{backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.25);border-radius:24px;padding:2.5rem 2rem;width:340px;box-shadow:0 8px 32px rgba(0,0,0,.15)}
+h2{text-align:center;margin-bottom:1.8rem;color:#fff;font-weight:600;font-size:1.4rem;letter-spacing:-.3px}
+h2 span{font-size:1.6rem;display:block;margin-bottom:.4rem}
+input{width:100%;padding:.8rem 1rem;margin-bottom:1rem;border:1px solid rgba(255,255,255,.3);border-radius:12px;font-size:.95rem;background:rgba(255,255,255,.15);backdrop-filter:blur(4px);color:#fff;outline:none;transition:all .3s}
+input::placeholder{color:rgba(255,255,255,.6)}
+input:focus{border-color:rgba(255,255,255,.6);background:rgba(255,255,255,.25)}
+button{width:100%;padding:.8rem;background:rgba(255,255,255,.25);backdrop-filter:blur(4px);color:#fff;border:1px solid rgba(255,255,255,.3);border-radius:12px;font-size:1rem;font-weight:500;cursor:pointer;transition:all .3s;letter-spacing:.3px}
+button:hover{background:rgba(255,255,255,.4);transform:translateY(-1px);box-shadow:0 4px 15px rgba(0,0,0,.1)}
+button:active{transform:translateY(0)}
+.flash{background:rgba(255,80,80,.25);backdrop-filter:blur(4px);border:1px solid rgba(255,100,100,.3);color:#fff;padding:.6rem 1rem;border-radius:12px;margin-bottom:1rem;text-align:center;font-size:.9rem}
+</style></head><body>
+<div class="card">
+<h2><span>🔐</span>管理后台</h2>
+{% with msgs = get_flashed_messages() %}{% if msgs %}{% for m in msgs %}<div class="flash">{{m}}</div>{% endfor %}{% endif %}{% endwith %}
+<form method="post">
+<input type="password" name="password" placeholder="请输入密码" required autofocus>
+<button type="submit">登录</button>
+</form>
+</div></body></html>
