@@ -14,13 +14,19 @@ Telegram bot for distributing Office 365 activation codes with a web admin panel
 ## One-Click Install
 
 ```bash
-git clone https://github.com/obace/tgbot.git && cd tgbot && chmod +x deploy.sh && sudo ./deploy.sh
+bash <(curl -Ls https://raw.githubusercontent.com/obace/tgbot/main/install.sh)
 ```
 
 Custom port (default 5600):
 
 ```bash
-sudo ./deploy.sh 8080
+bash <(curl -Ls https://raw.githubusercontent.com/obace/tgbot/main/install.sh) 8080
+```
+
+Or clone manually:
+
+```bash
+git clone https://github.com/obace/tgbot.git && cd tgbot && chmod +x deploy.sh && sudo ./deploy.sh
 ```
 
 ## Setup
