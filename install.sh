@@ -37,7 +37,7 @@ After=network.target
 [Service]
 Type=simple
 WorkingDirectory=$APP_DIR
-ExecStart=$APP_DIR/venv/bin/gunicorn -w 1 --threads 4 --timeout 120 --preload -b 0.0.0.0:$PORT app:app
+ExecStart=$APP_DIR/venv/bin/gunicorn -w 1 --threads 4 --timeout 120 -b 0.0.0.0:$PORT app:app
 Restart=always
 RestartSec=5
 
